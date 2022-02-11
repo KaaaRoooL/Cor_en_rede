@@ -9,33 +9,52 @@ namespace HelloWorld
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
 
+       
+
         public List<Material> materiales = new List<Material>();
 
-        
-        
 
-        
-   public override void OnNetworkSpawn()
+        Renderer rend;
+
+        void Start()
         {
-             if (IsOwner)
+            rend = GetComponent<MeshRenderer>();
+            
+        }
+
+
+        public override void OnNetworkSpawn()
+        {
+            if (IsOwner)
             {
-                //Move();
+                ChangeColor();
+                Move();
             }
         }
 
 
 
-        public void ChangeColor(){
-            
+        public void ChangeColor()
+        {
+             
+                rend.material = materiales[Random.Range(0, 10)]; 
+
         }
 
-        /*public void Move()
+
+       
+
+
+
+
+        public void Move()
         {
             if (NetworkManager.Singleton.IsServer)
             {
                 var randomPosition = GetRandomPositionOnPlane();
                 transform.position = randomPosition;
                 Position.Value = randomPosition;
+
             }
             else
             {
@@ -47,7 +66,10 @@ namespace HelloWorld
         void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
         {
             Position.Value = GetRandomPositionOnPlane();
+            
         }
+
+        
 
         static Vector3 GetRandomPositionOnPlane()
         {
@@ -57,6 +79,7 @@ namespace HelloWorld
         void Update()
         {
             transform.position = Position.Value;
-        }*/
+             
+        }
     }
 }
