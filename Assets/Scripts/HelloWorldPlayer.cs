@@ -3,23 +3,28 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 
+
+
+
 namespace HelloWorld
 {
     public class HelloWorldPlayer : NetworkBehaviour
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
 
-       
+       //public NetworkList<Material> materiales = new NetworkList<Material>();
+
+        
 
         public List<Material> materiales = new List<Material>();
-
+        
 
         Renderer rend;
 
         void Start()
         {
             rend = GetComponent<MeshRenderer>();
-            
+
         }
 
 
@@ -36,13 +41,14 @@ namespace HelloWorld
 
         public void ChangeColor()
         {
-             
-                rend.material = materiales[Random.Range(0, 10)]; 
 
+            rend.material = materiales[Random.Range(0, 10)];
+
+          
         }
 
 
-       
+
 
 
 
@@ -66,10 +72,11 @@ namespace HelloWorld
         void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
         {
             Position.Value = GetRandomPositionOnPlane();
-            
+
         }
 
-        
+
+
 
         static Vector3 GetRandomPositionOnPlane()
         {
@@ -79,7 +86,7 @@ namespace HelloWorld
         void Update()
         {
             transform.position = Position.Value;
-             
+
         }
     }
 }
