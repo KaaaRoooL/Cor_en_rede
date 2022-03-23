@@ -6,24 +6,42 @@ using System.Collections.Generic;
 
 
 
+
+
 namespace HelloWorld
 {
     public class HelloWorldPlayer : NetworkBehaviour
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
 
+        public NetworkVariable<Color> color = new NetworkVariable<Color>();
+
        //public NetworkList<Material> materiales = new NetworkList<Material>();
 
+        public static NetworkList<Color> listaColores = new NetworkList<Color>();
+        /*
+        {
+
+            Color.blue, 
+            Color.green,  
+            Color.white,  
+            Color.yellow, 
+            Color.grey, 
+            Color.magenta, 
+            Color.red, 
+            Color.black
         
+        };*/
 
         public List<Material> materiales = new List<Material>();
+        
         
 
         Renderer rend;
 
         void Start()
         {
-            rend = GetComponent<MeshRenderer>();
+            //rend = GetComponent<MeshRenderer>();
 
         }
 
@@ -42,9 +60,11 @@ namespace HelloWorld
         public void ChangeColor()
         {
 
-            rend.material = materiales[Random.Range(0, 10)];
+            //rend.material = materiales[Random.Range(0, materiales.Count)];
 
-          
+            //color = listaColores[Random.Range(0, listaColores.Count)];
+
+
         }
 
 
@@ -72,11 +92,11 @@ namespace HelloWorld
         void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
         {
             Position.Value = GetRandomPositionOnPlane();
-
         }
 
 
 
+        
 
         static Vector3 GetRandomPositionOnPlane()
         {
@@ -85,7 +105,7 @@ namespace HelloWorld
 
         void Update()
         {
-            transform.position = Position.Value;
+            transform.position = Position.Value;       
 
         }
     }
