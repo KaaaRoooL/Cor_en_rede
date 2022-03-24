@@ -3,22 +3,17 @@ using Unity.Netcode;
 using UnityEngine;
 using System.Collections.Generic;
 
-
-
-
-
-
 namespace HelloWorld
 {
     public class HelloWorldPlayer : NetworkBehaviour
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
 
-        public NetworkVariable<Color> color = new NetworkVariable<Color>();
+        //public NetworkVariable<Color> color = new NetworkVariable<Color>();
 
        //public NetworkList<Material> materiales = new NetworkList<Material>();
 
-        public static NetworkList<Color> listaColores = new NetworkList<Color>();
+        public static List<Color> listaColores = new List<Color>();
         /*
         {
 
@@ -33,16 +28,17 @@ namespace HelloWorld
         
         };*/
 
-        public List<Material> materiales = new List<Material>();
+        //public List<Material> materiales = new List<Material>();
         
         
 
         Renderer rend;
 
+        
         void Start()
         {
-            //rend = GetComponent<MeshRenderer>();
-
+            rend = GetComponent<MeshRenderer>();
+            
         }
 
 
@@ -57,21 +53,30 @@ namespace HelloWorld
 
 
 
+
+        public static void llenarListaColores(){
+            listaColores.Add(Color.blue);
+            listaColores.Add(Color.green);
+            listaColores.Add(Color.white);
+            listaColores.Add(Color.yellow); 
+            listaColores.Add(Color.grey); 
+            listaColores.Add(Color.magenta); 
+            listaColores.Add(Color.red);
+            listaColores.Add(Color.black);
+
+        }
         public void ChangeColor()
         {
 
+             if (NetworkManager.Singleton.IsServer)
+            {
+                llenarListaColores();
+
+            }
             //rend.material = materiales[Random.Range(0, materiales.Count)];
-
-            //color = listaColores[Random.Range(0, listaColores.Count)];
-
-
+            rend.material.color = listaColores[Random.Range(0, listaColores.Count)];
+            
         }
-
-
-
-
-
-
 
         public void Move()
         {

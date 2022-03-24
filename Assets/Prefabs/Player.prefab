@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5534187202981562923}
   - component: {fileID: 5534187202981562932}
   - component: {fileID: 5534187202981562933}
-  - component: {fileID: 6452134174777865856}
+  - component: {fileID: -1324574703228823954}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -114,7 +114,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &6452134174777865856
+--- !u!114 &-1324574703228823954
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,14 +128,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Position:
     m_InternalValue: {x: 0, y: 0, z: 0}
-  materiales:
-  - {fileID: 2100000, guid: dc3db1d74109ddd499563d689eab2b67, type: 2}
-  - {fileID: 2100000, guid: 2ac6ef1bd19fba847b7112db38de0d64, type: 2}
-  - {fileID: 2100000, guid: 33dd29efb82104a46a461121370d2612, type: 2}
-  - {fileID: 2100000, guid: b78dc833d5d51204498c61ab42cca63a, type: 2}
-  - {fileID: 2100000, guid: c5fc5454dad1df14eb995192c7370750, type: 2}
-  - {fileID: 2100000, guid: eddab5ac44b4ae0498e80bce5ee1ded2, type: 2}
-  - {fileID: 2100000, guid: 5f25ed095f4f44842aacce2e53bd1e26, type: 2}
-  - {fileID: 2100000, guid: 40d9c1b713058d14bb03719adca130d5, type: 2}
-  - {fileID: 2100000, guid: 9955e00a445d8fc48a83a179fca44a41, type: 2}
-  - {fileID: 2100000, guid: 78883bf880fab9c429b9a5b5b3cfbe4f, type: 2}
+  materiales: []
