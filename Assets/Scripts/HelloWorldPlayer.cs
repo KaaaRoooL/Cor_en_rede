@@ -9,24 +9,13 @@ namespace HelloWorld
     {
         public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
 
-        //public NetworkVariable<Color> color = new NetworkVariable<Color>();
+        public NetworkVariable<Color> ColorPlayer = new NetworkVariable<Color>();
 
        //public NetworkList<Material> materiales = new NetworkList<Material>();
 
         public static List<Color> listaColores = new List<Color>();
-        /*
-        {
-
-            Color.blue, 
-            Color.green,  
-            Color.white,  
-            Color.yellow, 
-            Color.grey, 
-            Color.magenta, 
-            Color.red, 
-            Color.black
         
-        };*/
+        public List<Color> coloresUsados = new List<Color>();
 
         //public List<Material> materiales = new List<Material>();
         
@@ -38,7 +27,11 @@ namespace HelloWorld
         void Start()
         {
             rend = GetComponent<MeshRenderer>();
-            
+            Position.OnValueChanged += OnPositionChange;
+        }
+
+        public void OnPositionChange(Vector3 previousValue, Vector3 newValue){
+            transform.position = Position.Value;
         }
 
 
@@ -49,6 +42,8 @@ namespace HelloWorld
                 ChangeColor();
                 Move();
             }
+
+            
         }
 
 
@@ -68,40 +63,40 @@ namespace HelloWorld
         public void ChangeColor()
         {
 
-             if (NetworkManager.Singleton.IsServer)
-            {
+            if (IsServer && IsOwner){
                 llenarListaColores();
-
             }
             //rend.material = materiales[Random.Range(0, materiales.Count)];
             rend.material.color = listaColores[Random.Range(0, listaColores.Count)];
             
+           //coloresUsados.Add(rend.material.color);
+            //listaColores.Remove(rend.material.color);
+            
         }
 
-        public void Move()
-        {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                var randomPosition = GetRandomPositionOnPlane();
-                transform.position = randomPosition;
-                Position.Value = randomPosition;
 
-            }
-            else
-            {
-                SubmitPositionRequestServerRpc();
-            }
+        public void Move()
+        {       
+            SubmitPositionRequestServerRpc();
         }
 
         [ServerRpc]
         void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
         {
             Position.Value = GetRandomPositionOnPlane();
+            
         }
 
+        [ServerRpc]
+        void SubmitColorRequestServerRpc(ServerRpcParams rpcParams = default)
+        {
+            Color old= ColorPlayer.Value;
+            Color newColor = listaColores[Random.Range(0, listaColores.Count)];   
+            listaColores.Remove(newColor);
+            listaColores.Add(old);
+            ColorPlayer.Value= newColor;
+        }
 
-
-        
 
         static Vector3 GetRandomPositionOnPlane()
         {
@@ -110,8 +105,8 @@ namespace HelloWorld
 
         void Update()
         {
-            transform.position = Position.Value;       
-
-        }
+            //transform.position = Position.Value;       
+             rend.material.color = ColorPlayer.Value;
+        }   
     }
 }
