@@ -11,28 +11,29 @@ namespace HelloWorld
 
         public NetworkVariable<Color> ColorPlayer = new NetworkVariable<Color>();
 
-       //public NetworkList<Material> materiales = new NetworkList<Material>();
-
         public static List<Color> listaColores = new List<Color>();
-        
-        public List<Color> coloresUsados = new List<Color>();
-
-        //public List<Material> materiales = new List<Material>();
-        
-        
 
         Renderer rend;
 
-        
         void Start()
-        {
+        {    
             rend = GetComponent<MeshRenderer>();
             Position.OnValueChanged += OnPositionChange;
+            /*ColorPlayer.OnValueChanged += OnColorChange;*/
+            if(IsServer && IsOwner){
+                llenarListaColores();
+            }
+            SubmitColorRequestServerRpc();
+           
         }
 
         public void OnPositionChange(Vector3 previousValue, Vector3 newValue){
             transform.position = Position.Value;
         }
+
+        /*public void OnColorChange(Color previousValue, Color newValue){
+            rend.material.color = ColorPlayer.Value;
+        }*/
 
 
         public override void OnNetworkSpawn()
@@ -41,13 +42,8 @@ namespace HelloWorld
             {
                 ChangeColor();
                 Move();
-            }
-
-            
+            }           
         }
-
-
-
 
         public static void llenarListaColores(){
             listaColores.Add(Color.blue);
@@ -62,16 +58,7 @@ namespace HelloWorld
         }
         public void ChangeColor()
         {
-
-            if (IsServer && IsOwner){
-                llenarListaColores();
-            }
-            //rend.material = materiales[Random.Range(0, materiales.Count)];
-            rend.material.color = listaColores[Random.Range(0, listaColores.Count)];
-            
-           //coloresUsados.Add(rend.material.color);
-            //listaColores.Remove(rend.material.color);
-            
+            SubmitColorRequestServerRpc();         
         }
 
 
@@ -106,7 +93,7 @@ namespace HelloWorld
         void Update()
         {
             //transform.position = Position.Value;       
-             rend.material.color = ColorPlayer.Value;
+            rend.material.color = ColorPlayer.Value;
         }   
     }
 }
