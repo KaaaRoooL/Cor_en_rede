@@ -17,11 +17,10 @@ namespace HelloWorld
             rend = GetComponent<MeshRenderer>();
             Position.OnValueChanged += OnPositionChange;
             ColorPlayer.OnValueChanged += OnColorChange;
-            if(IsServer && IsOwner){
-                llenarListaColores();
-            }                 
+            if (IsOwner){ 
             SubmitColorRequestServerRpc(true);
-                    
+            }
+           
         }
 
         public void OnPositionChange(Vector3 previousValue, Vector3 newValue){
@@ -31,15 +30,16 @@ namespace HelloWorld
         public void OnColorChange(Color previousValue, Color newValue){
             rend.material.color = ColorPlayer.Value;
         }
-
         public override void OnNetworkSpawn()
         {
+            if(IsServer && IsOwner){
+                llenarListaColores();
+            }
             if (IsOwner)
             {
                 Move();
             }           
         }
-
         public void llenarListaColores(){
             listaColores.Add(Color.blue);
             listaColores.Add(Color.green);
@@ -49,6 +49,8 @@ namespace HelloWorld
             listaColores.Add(Color.magenta); 
             listaColores.Add(Color.red);
             listaColores.Add(Color.black);
+            listaColores.Add(Color.cyan);
+            
 
         }
         public void ChangeColor()
@@ -76,6 +78,7 @@ namespace HelloWorld
                 listaColores.Add(old);
             }           
             ColorPlayer.Value= newColor;
+            Debug.Log(listaColores.Count);
         }
         static Vector3 GetRandomPositionOnPlane()
         {
@@ -85,7 +88,7 @@ namespace HelloWorld
         void Update()
         {
             //transform.position = Position.Value;       
-            //rend.material.color = ColorPlayer.Value;
+            rend.material.color = ColorPlayer.Value;
         }   
     }
 }
